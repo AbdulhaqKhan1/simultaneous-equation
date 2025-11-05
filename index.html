@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simultaneous Equation Solver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .equation {
+            margin: 10px 0;
+        }
+        input {
+            width: 60px;
+            margin: 5px;
+            padding: 5px;
+        }
+        button {
+            padding: 10px 135px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Simultaneous Equation Solver</h2>
+        <p>Solve: ax + by = c and dx + ey = f</p>
+        <div class="equation">
+            <input type="number" id="a" placeholder="a"> x +
+            <input type="number" id="b" placeholder="b"> y =
+            <input type="number" id="c" placeholder="c">
+        </div>
+        <div class="equation">
+            <input type="number" id="d" placeholder="d"> x +
+            <input type="number" id="e" placeholder="e"> y =
+            <input type="number" id="f" placeholder="f">
+        </div>
+        <button onclick="solveEquations()">Solve</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function solveEquations() {
+            // Get input values
+            const a = parseFloat(document.getElementById('a').value);
+            const b = parseFloat(document.getElementById('b').value);
+            const c = parseFloat(document.getElementById('c').value);
+            const d = parseFloat(document.getElementById('d').value);
+            const e = parseFloat(document.getElementById('e').value);
+            const f = parseFloat(document.getElementById('f').value);
+
+            // Calculate determinant
+            const det = a * e - b * d;
+
+            // Check for no unique solution
+            if (Math.abs(det) < 1e-10) {
+                document.getElementById('result').innerText =
+                    'No unique solution (determinant is zero).';
+                return;
+            }
+
+            // Cramer's Rule
+            const x = (c * e - b * f) / det;
+            const y = (a * f - c * d) / det;
+
+            // Display result
+            document.getElementById('result').innerText =
+                Solution: x = ${x.toFixed(2)}, y = ${y.toFixed(2)};
+        }
+    </script>
+</body>
+</html>
