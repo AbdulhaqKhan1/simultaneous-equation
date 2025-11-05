@@ -1,57 +1,211 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Simultaneous Equation Solver</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simultaneous Equations Solver</title>
   <style>
-    body { font-family: Arial; padding: 20px; max-width: 400px; margin: auto; }
-    input { width: 60px; margin: 5px; text-align: center; }
-    button { margin-top: 10px; }
-    #result { margin-top: 15px; font-weight: bold; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+      font-size: 1.8rem;
+    }
+
+    .equation {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    input {
+      width: 60px;
+      padding: 10px;
+      font-size: 1rem;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      text-align: center;
+      transition: border 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .operator {
+      font-weight: bold;
+      color: #555;
+      font-size: 1.2rem;
+    }
+
+    .equals {
+      font-weight: bold;
+      color: #333;
+      margin: 0 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #5a6fd8;
+    }
+
+    .result {
+      margin-top: 25px;
+      padding: 15px;
+      background: #f0f2f5;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 1.2rem;
+      color: #333;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .error {
+      color: #e74c3c;
+    }
+
+    .success {
+      color: #27ae60;
+    }
+
+    .label {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    @media (max-width: 400px) {
+      input {
+        width: 50px;
+        padding: 8px;
+      }
+    }
   </style>
 </head>
 <body>
-  <h2>Solve 2 Equations (Ax + By = C)</h2>
+  <div class="container">
+    <h1>Simultaneous Equations Solver</h1>
+    <p class="label">Enter coefficients for equations in the form: ax + by = c</p>
 
-  <!-- Equation 1 -->
-  <input id="a1" type="number" placeholder="A1"> x +
-  <input id="b1" type="number" placeholder="B1"> y =
-  <input id="c1" type="number" placeholder="C1"><br>
+    <!-- Equation 1 -->
+    <div class="equation">
+      <input type="number" id="a1" placeholder="a" value="1">
+      <span class="operator">x</span>
+      <span class="operator">+</span>
+      <input type="number" id="b1" placeholder="b" value="1">
+      <span class="operator">y</span>
+      <span class="equals">=</span>
+      <input type="number" id="c1" placeholder="c" value="5">
+    </div>
 
-  <!-- Equation 2 -->
-  <input id="a2" type="number" placeholder="A2"> x +
-  <input id="b2" type="number" placeholder="B2"> y =
-  <input id="c2" type="number" placeholder="C2"><br>
+    <!-- Equation 2 -->
+    <div class="equation">
+      <input type="number" id="a2" placeholder="a" value="2">
+      <span class="operator">x</span>
+      <span class="operator">+</span>
+      <input type="number" id="b2" placeholder="b" value="-1">
+      <span class="operator">y</span>
+      <span class="equals">=</span>
+      <input type="number" id="c2" placeholder="c" value="1">
+    </div>
 
-  <button onclick="solve()">Solve</button>
+    <button onclick="solveEquations()">Solve</button>
 
-  <div id="result"></div>
+    <div id="result" class="result">Enter values and click Solve</div>
+  </div>
 
   <script>
-    function solve() {
-  let a1 = parseFloat(document.getElementById("a1").value);
-  let b1 = parseFloat(document.getElementById("b1").value);
-  let c1 = parseFloat(document.getElementById("c1").value);
-  let a2 = parseFloat(document.getElementById("a2").value);
-  let b2 = parseFloat(document.getElementById("b2").value);
-  let c2 = parseFloat(document.getElementById("c2").value);
+    function solveEquations() {
+      // Get input values
+      const a1 = parseFloat(document.getElementById('a1').value);
+      const b1 = parseFloat(document.getElementById('b1').value);
+      const c1 = parseFloat(document.getElementById('c1').value);
+      const a2 = parseFloat(document.getElementById('a2').value);
+      const b2 = parseFloat(document.getElementById('b2').value);
+      const c2 = parseFloat(document.getElementById('c2').value);
 
-  // Check if any input is missing or invalid
-  if ([a1, b1, c1, a2, b2, c2].some(isNaN)) {
-    document.getElementById("result").innerText = "Please fill all fields correctly.";
-    return;
-  }
+      const resultDiv = document.getElementById('result');
 
-  let det = a1 * b2 - a2 * b1;
-
-  if (det === 0) {
-    document.getElementById("result").innerText = "No unique solution.";
-  } else {
-    let x = (c1 * b2 - c2 * b1) / det;
-    let y = (a1 * c2 - a2 * c1) / det;
-    document.getElementById("result").innerText = `x = x, y ={y}`;
-
+      // Validate inputs
+      if (isNaN(a1) || isNaN(b1) || isNaN(c1) || isNaN(a2) || isNaN(b2) || isNaN(c2)) {
+        resultDiv.innerHTML = '<span class="error">Please fill all fields with numbers.</span>';
+        resultDiv.className = 'result error';
+        return;
       }
+
+      // Calculate determinant
+      const determinant = a1 * b2 - a2 * b1;
+
+      if (determinant === 0) {
+        resultDiv.innerHTML = '<span class="error">No unique solution (parallel lines or infinite solutions).</span>';
+        resultDiv.className = 'result error';
+        return;
+      }
+
+      // Cramer's Rule
+      const x = (c1 * b2 - c2 * b1) / determinant;
+      const y = (a1 * c2 - a2 * c1) / determinant;
+
+      // Display result
+      resultDiv.innerHTML = `
+        <span class="success">
+          x = ${x.toFixed(3)}, &nbsp;&nbsp; y = ${y.toFixed(3)}
+        </span>
+      `;
+      resultDiv.className = 'result success';
     }
+
+    // Auto-solve on input change (optional)
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('input', solveEquations);
+    });
+
+    // Solve on page load with default values
+    window.onload = solveEquations;
   </script>
 </body>
 </html>
